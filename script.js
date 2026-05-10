@@ -110,54 +110,81 @@ function initSnowflakes() {
 
         // Touch support for drag and drop
         let touchClone = null;
+        let touchActive = false;
+
         piece.addEventListener('touchstart', (e) => {
             if (piece.classList.contains('placed')) return;
             e.preventDefault();
+            e.stopPropagation();
+            touchActive = true;
             const touch = e.touches[0];
             touchClone = piece.cloneNode(true);
             touchClone.style.position = 'fixed';
             touchClone.style.zIndex = '9999';
             touchClone.style.pointerEvents = 'none';
-            touchClone.style.opacity = '0.8';
-            touchClone.style.left = (touch.clientX - 25) + 'px';
-            touchClone.style.top = (touch.clientY - 25) + 'px';
+            touchClone.style.opacity = '0.9';
+            touchClone.style.transform = 'scale(1.2)';
+            touchClone.style.transition = 'none';
+            touchClone.style.left = (touch.clientX - 30) + 'px';
+            touchClone.style.top = (touch.clientY - 60) + 'px';
             document.body.appendChild(touchClone);
-        });
+            piece.style.opacity = '0.3';
+        }, { passive: false });
 
         piece.addEventListener('touchmove', (e) => {
-            if (!touchClone) return;
+            if (!touchActive || !touchClone) return;
             e.preventDefault();
+            e.stopPropagation();
             const touch = e.touches[0];
-            touchClone.style.left = (touch.clientX - 25) + 'px';
-            touchClone.style.top = (touch.clientY - 25) + 'px';
+            touchClone.style.left = (touch.clientX - 30) + 'px';
+            touchClone.style.top = (touch.clientY - 60) + 'px';
 
-            // Highlight slots on hover
-            const el = document.elementFromPoint(touch.clientX, touch.clientY);
-            document.querySelectorAll('.snowflake-slot').forEach(s => s.classList.remove('highlight'));
-            if (el && el.classList.contains('snowflake-slot')) {
-                el.classList.add('highlight');
+            // Find slot under finger using bounding rects (more reliable than elementFromPoint)
+            const slots = document.querySelectorAll('.snowflake-slot');
+            slots.forEach(s => s.classList.remove('highlight'));
+            for (const slot of slots) {
+                const rect = slot.getBoundingClientRect();
+                if (touch.clientX >= rect.left && touch.clientX <= rect.right &&
+                    touch.clientY >= rect.top && touch.clientY <= rect.bottom) {
+                    slot.classList.add('highlight');
+                    break;
+                }
             }
-        });
+        }, { passive: false });
 
         piece.addEventListener('touchend', (e) => {
-            if (!touchClone) return;
+            if (!touchActive) return;
+            touchActive = false;
             const touch = e.changedTouches[0];
             if (touchClone) {
                 touchClone.remove();
                 touchClone = null;
             }
-            document.querySelectorAll('.snowflake-slot').forEach(s => s.classList.remove('highlight'));
 
-            const el = document.elementFromPoint(touch.clientX, touch.clientY);
-            if (el && el.classList.contains('snowflake-slot') && !el.classList.contains('filled')) {
-                el.classList.add('filled');
-                el.innerHTML = '';
+            // Find slot under finger using bounding rects
+            const slots = document.querySelectorAll('.snowflake-slot');
+            slots.forEach(s => s.classList.remove('highlight'));
+            let targetSlot = null;
+            for (const slot of slots) {
+                const rect = slot.getBoundingClientRect();
+                if (touch.clientX >= rect.left && touch.clientX <= rect.right &&
+                    touch.clientY >= rect.top && touch.clientY <= rect.bottom) {
+                    targetSlot = slot;
+                    break;
+                }
+            }
+
+            if (targetSlot && !targetSlot.classList.contains('filled')) {
+                targetSlot.classList.add('filled');
+                targetSlot.innerHTML = '';
                 piece.classList.add('placed');
                 filledCount++;
                 showPhoto(pagePhotos[1][filledCount - 1]);
                 if (filledCount === 4) setTimeout(() => showSuccess('Зимняя сказка открыта!'), 500);
+            } else {
+                piece.style.opacity = '1';
             }
-        });
+        }, { passive: false });
 
         pieces.appendChild(piece);
     });
@@ -830,7 +857,8 @@ function launchConfetti() {
     let swiping = false;
 
     const interactiveSelectors = [
-        '.snowflake-piece', '.crank-container', '.crank-arm', '.crank-handle'
+        '.snowflake-piece', '.snowflake-game', '.draggable-snowflakes',
+        '.crank-container', '.crank-arm', '.crank-handle'
     ];
 
     document.addEventListener('touchstart', (e) => {
