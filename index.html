@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Интерактивный Альбом</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,500;0,700;1,300;1,500&family=Caveat:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Photo counter -->
+    <div class="photo-counter">
+        <span id="photoCount">0</span> / 31 фото
+    </div>
+
+    <!-- Navigation arrows -->
+    <button class="page-arrow left" onclick="prevPage()">&#8249;</button>
+    <button class="page-arrow right" onclick="nextPage()">&#8250;</button>
+
+    <!-- Navigation dots -->
+    <div class="nav-bar" id="navBar"></div>
+
+    <!-- Photo reveal overlay -->
+    <div class="photo-reveal" id="photoReveal">
+        <button class="close-btn" onclick="closePhoto()">&times;</button>
+        <img id="revealImg" src="" alt="photo">
+    </div>
+
+    <!-- Success message -->
+    <div class="success-msg" id="successMsg"></div>
+
+    <!-- PAGE 0: INTRO -->
+    <div class="page active" id="page-0">
+        <div class="intro-decoration">
+            <span class="intro-leaf" style="top:8%;left:8%;">&#127809;</span>
+            <span class="intro-leaf" style="top:15%;right:12%;animation-delay:2s;">&#127800;</span>
+            <span class="intro-leaf" style="bottom:25%;left:15%;animation-delay:4s;">&#10024;</span>
+            <span class="intro-leaf" style="bottom:20%;right:8%;animation-delay:6s;">&#127803;</span>
+            <span class="intro-leaf" style="top:40%;left:5%;animation-delay:1s;">&#127801;</span>
+            <span class="intro-leaf" style="top:60%;right:6%;animation-delay:3s;">&#10024;</span>
+            <span class="intro-leaf" style="bottom:40%;left:8%;animation-delay:5s;">&#127802;</span>
+            <span class="intro-leaf" style="top:75%;right:12%;animation-delay:7s;">&#127799;</span>
+        </div>
+        <!-- Corner ribbons -->
+        <div class="intro-corner intro-corner-tl"></div>
+        <div class="intro-corner intro-corner-tr"></div>
+        <div class="intro-corner intro-corner-bl"></div>
+        <div class="intro-corner intro-corner-br"></div>
+        <!-- Sparkle particles -->
+        <div class="intro-sparkles" id="introSparkles"></div>
+        <div class="intro-content">
+            <h1 class="intro-title">С днём рождения, Солнышко!</h1>
+            <p class="intro-subtitle">В этот день я рад проводить его вместе с тобой,<br>поэтому подготовил небольшой подарок!</p>
+            <button class="intro-start-btn" onclick="goToPage(1)">Открыть альбом</button>
+        </div>
+    </div>
+
+    <!-- PAGE 1: SNOWFLAKES (Snow Globe) -->
+    <div class="page" id="page-1">
+        <div class="snow-bg" id="snowBg"></div>
+        <!-- Snow globe dome -->
+        <div class="snowglobe-dome"></div>
+        <!-- Snow globe base -->
+        <div class="snowglobe-base"></div>
+        <!-- Snowy trees in background -->
+        <div class="snow-trees">
+            <div class="snow-tree" style="left:5%;bottom:8%;opacity:0.3;transform:scale(0.6)"></div>
+            <div class="snow-tree" style="left:12%;bottom:6%;opacity:0.4;transform:scale(0.8)"></div>
+            <div class="snow-tree" style="right:8%;bottom:7%;opacity:0.3;transform:scale(0.7)"></div>
+            <div class="snow-tree" style="right:15%;bottom:9%;opacity:0.35;transform:scale(0.5)"></div>
+            <div class="snow-tree" style="left:25%;bottom:5%;opacity:0.2;transform:scale(0.4)"></div>
+        </div>
+        <!-- Snow hills -->
+        <div class="snow-hills"></div>
+        <h2 class="page-title"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="2" x2="22" y1="12" y2="12"/><line x1="12" x2="12" y1="2" y2="22"/><path d="m20 16-4-4 4-4"/><path d="m4 8 4 4-4 4"/><path d="m16 4-4 4-4-4"/><path d="m8 20 4-4 4 4"/></svg> Снежинки</h2>
+        <p class="page-hint">Перетащи снежинки в ячейки, чтобы раскрыть зимние воспоминания</p>
+        <div class="snowflake-game">
+            <div class="snowflake-grid" id="snowflakeGrid"></div>
+            <div class="draggable-snowflakes" id="snowflakePieces"></div>
+        </div>
+    </div>
+
+    <!-- PAGE 2: TREE CHOPPING (Forest scene) -->
+    <div class="page" id="page-2">
+        <!-- Background forest layers -->
+        <div class="forest-bg-far"></div>
+        <div class="forest-bg-mid"></div>
+        <!-- Sky clouds -->
+        <div class="forest-cloud" style="top:8%;left:10%;width:120px;height:40px;animation-delay:0s;"></div>
+        <div class="forest-cloud" style="top:12%;right:15%;width:90px;height:30px;animation-delay:3s;"></div>
+        <div class="forest-cloud" style="top:5%;left:45%;width:100px;height:35px;animation-delay:6s;"></div>
+        <!-- Birds -->
+        <div class="forest-bird" style="top:15%;left:20%;animation-delay:0s;">&#128038;</div>
+        <div class="forest-bird" style="top:10%;right:25%;animation-delay:2s;">&#128038;</div>
+        <!-- Path/road -->
+        <div class="forest-path"></div>
+        <h2 class="page-title"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 10v.2A3 3 0 0 1 8.9 16H5a3 3 0 0 1-1-5.8V10a3 3 0 0 1 6 0Z"/><path d="M7 16v6"/><path d="M13 19v3"/><path d="M15.7 14.4A3 3 0 0 0 19 11V10a3 3 0 0 0-6 0v.2"/><path d="M13 16h4a3 3 0 0 0 0-6h-.3"/></svg> Лесоруб</h2>
+        <p class="page-hint">Кликай по деревьям несколько раз чтобы срубить их!</p>
+        <div class="forest-container" id="forestContainer">
+            <div class="forest-ground"></div>
+            <div class="forest-grass"></div>
+        </div>
+    </div>
+
+    <!-- PAGE 3: BUBBLES (Park/sky scene) -->
+    <div class="page" id="page-3">
+        <!-- Rainbow arc -->
+        <div class="bubble-rainbow"></div>
+        <!-- Floating sparkles -->
+        <div class="bubble-sparkles">
+            <span style="top:10%;left:8%;animation-delay:0s;">&#10022;</span>
+            <span style="top:20%;right:10%;animation-delay:1s;">&#10022;</span>
+            <span style="bottom:30%;left:12%;animation-delay:2s;">&#10022;</span>
+            <span style="top:40%;right:20%;animation-delay:3s;">&#10022;</span>
+            <span style="bottom:20%;right:8%;animation-delay:4s;">&#10022;</span>
+            <span style="top:60%;left:5%;animation-delay:5s;">&#10022;</span>
+        </div>
+        <!-- Wand -->
+        <div class="bubble-wand"></div>
+        <h2 class="page-title"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg> Мыльные пузыри</h2>
+        <p class="page-hint">Лопни все пузыри &mdash; за ними прячутся фотографии</p>
+        <div class="bubble-container" id="bubbleContainer"></div>
+    </div>
+
+    <!-- PAGE 4: GIFTS -->
+    <div class="page" id="page-4">
+        <!-- Confetti particles -->
+        <div class="gifts-confetti" id="giftsConfetti"></div>
+        <!-- Ribbon decorations -->
+        <div class="gift-ribbon-deco" style="top:10%;left:5%;transform:rotate(-15deg);"></div>
+        <div class="gift-ribbon-deco" style="top:8%;right:8%;transform:rotate(20deg);"></div>
+        <div class="gift-ribbon-deco" style="bottom:15%;left:10%;transform:rotate(10deg);"></div>
+        <div class="gift-ribbon-deco" style="bottom:12%;right:6%;transform:rotate(-25deg);"></div>
+        <h2 class="page-title"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13"/><path d="M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7"/><path d="M7.5 8a2.5 2.5 0 0 1 0-5A4.8 8 0 0 1 12 8a4.8 8 0 0 1 4.5-5 2.5 2.5 0 0 1 0 5"/></svg> Подарки</h2>
+        <p class="page-hint">Нажми на подарки, чтобы развернуть их!</p>
+        <div class="gifts-container" id="giftsContainer"></div>
+    </div>
+
+    <!-- PAGE 5: CONSTELLATION (Taurus) - Night sky -->
+    <div class="page" id="page-5">
+        <!-- Shooting stars -->
+        <div class="shooting-star" style="top:15%;left:10%;animation-delay:2s;"></div>
+        <div class="shooting-star" style="top:25%;right:20%;animation-delay:5s;"></div>
+        <div class="shooting-star" style="top:8%;left:50%;animation-delay:8s;"></div>
+        <!-- Moon -->
+        <div class="night-moon"></div>
+        <!-- Horizon glow -->
+        <div class="horizon-glow"></div>
+        <h2 class="page-title" style="color: rgba(255,220,150,0.9);"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/><path d="M5 3v4"/><path d="M19 17v4"/><path d="M3 5h4"/><path d="M17 19h4"/></svg> Созвездие Тельца</h2>
+        <p class="page-hint" style="color: rgba(255,255,255,0.5);">Соедини звёзды по порядку, чтобы зажечь созвездие</p>
+        <div class="constellation-container" id="constellationContainer">
+            <canvas id="constellationCanvas"></canvas>
+            <span class="constellation-label">TAURUS</span>
+        </div>
+    </div>
+
+    <!-- PAGE 6: MUSIC BOX (Cozy room) -->
+    <div class="page" id="page-6">
+        <!-- Candles -->
+        <div class="room-candle" style="bottom:15%;left:10%;"></div>
+        <div class="room-candle" style="bottom:15%;right:10%;"></div>
+        <!-- Warm glow orbs -->
+        <div class="warm-orb" style="top:15%;left:8%;"></div>
+        <div class="warm-orb" style="top:20%;right:12%;animation-delay:2s;"></div>
+        <div class="warm-orb" style="bottom:25%;left:15%;animation-delay:4s;"></div>
+        <!-- Lace border top -->
+        <div class="lace-border-top"></div>
+        <div class="lace-border-bottom"></div>
+        <h2 class="page-title"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg> Музыкальная шкатулка</h2>
+        <p class="page-hint">Крути ручку круговыми движениями мыши</p>
+        <div class="musicbox-container">
+            <div class="musicbox" id="musicBox">
+                <div class="musicbox-lid"></div>
+                <div class="musicbox-decoration">
+                    <div class="musicbox-gem"></div>
+                    <div class="musicbox-gem"></div>
+                    <div class="musicbox-gem"></div>
+                </div>
+                <div class="crank-container" id="crankContainer">
+                    <div class="crank-arm" id="crankArm"></div>
+                    <div class="crank-handle"></div>
+                </div>
+            </div>
+            <p class="musicbox-turns" id="musicboxTurns">Повороты: 0 / 8</p>
+        </div>
+    </div>
+
+    <!-- PAGE 7: FLOWERS (Garden scene) -->
+    <div class="page" id="page-7">
+        <div class="sun-rays"></div>
+        <!-- Fence -->
+        <div class="garden-fence"></div>
+        <!-- Background bushes -->
+        <div class="garden-bush" style="left:3%;bottom:12%;"></div>
+        <div class="garden-bush" style="right:5%;bottom:10%;transform:scale(0.8);"></div>
+        <!-- Ladybug -->
+        <div class="garden-ladybug">&#128030;</div>
+        <!-- Clouds -->
+        <div class="garden-cloud" style="top:8%;left:15%;"></div>
+        <div class="garden-cloud" style="top:5%;right:20%;width:80px;height:30px;animation-delay:4s;"></div>
+        <h2 class="page-title"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7.5a4.5 4.5 0 1 1 4.5 4.5M12 7.5A4.5 4.5 0 1 0 7.5 12M12 7.5V9m-4.5 3a4.5 4.5 0 1 0 4.5 4.5M7.5 12H9m3 4.5a4.5 4.5 0 1 1-4.5-4.5M12 16.5V15m4.5-3a4.5 4.5 0 1 0-4.5-4.5M16.5 12H15"/><circle cx="12" cy="12" r="3"/><path d="m8 16 1.5-1.5"/><path d="M14.5 9.5 16 8"/><path d="m8 8 1.5 1.5"/><path d="M14.5 14.5 16 16"/></svg> Сад воспоминаний</h2>
+        <p class="page-hint">Нажми на горшочки чтобы полить цветы</p>
+        <div class="garden-container" id="gardenContainer"></div>
+    </div>
+
+    <!-- PAGE 8: PUZZLE FINALE (Golden frame) -->
+    <div class="page" id="page-8">
+        <!-- Ornate frame corners -->
+        <div class="frame-corner frame-corner-tl"></div>
+        <div class="frame-corner frame-corner-tr"></div>
+        <div class="frame-corner frame-corner-bl"></div>
+        <div class="frame-corner frame-corner-br"></div>
+        <!-- Confetti (hidden, shown on completion) -->
+        <div class="confetti-container" id="confettiContainer"></div>
+        <!-- Glowing particles -->
+        <div class="finale-glow"></div>
+        <h2 class="page-title"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19.439 7.85c-.049.322.059.648.289.878l1.568 1.568c.47.47.706 1.087.706 1.704s-.235 1.233-.706 1.704l-1.611 1.611a.98.98 0 0 1-.837.276c-.47-.07-.802-.48-.968-.925a2.501 2.501 0 1 0-3.214 3.214c.446.166.855.497.925.968a.979.979 0 0 1-.276.837l-1.61 1.61a2.404 2.404 0 0 1-1.705.707 2.402 2.402 0 0 1-1.704-.706l-1.568-1.568a1.026 1.026 0 0 0-.877-.29c-.493.074-.84.504-1.02.968a2.5 2.5 0 1 1-3.237-3.237c.464-.18.894-.527.967-1.02a1.026 1.026 0 0 0-.289-.877l-1.568-1.568A2.402 2.402 0 0 1 1.998 12c0-.617.236-1.234.706-1.704L4.23 8.77c.24-.24.581-.353.917-.303.515.077.877.528 1.073 1.01a2.5 2.5 0 1 0 3.259-3.259c-.482-.196-.933-.558-1.01-1.073-.05-.336.062-.676.303-.917l1.525-1.525A2.402 2.402 0 0 1 12 1.998c.617 0 1.234.236 1.704.706l1.568 1.568c.23.23.556.338.877.29.493-.074.84-.504 1.02-.968a2.5 2.5 0 1 1 3.237 3.237c-.464.18-.894.527-.967 1.02Z"/></svg> Финальный пазл</h2>
+        <p class="page-hint">Нажми на кусочки по порядку &mdash; от 1 до 9</p>
+        <div class="puzzle-container" id="puzzleContainer"></div>
+        <p id="finalMessage" style="margin-top:25px; font-family:'Caveat',cursive; font-size:1.6rem; color:var(--gold); text-align:center; max-width:500px; line-height:1.6; opacity:0; transition: opacity 1.5s ease;">
+            Спасибо тебе за то, что я нахожусь с тобой в одной вселенной, на одной планете
+        </p>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

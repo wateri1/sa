@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(sed -i 's/^        //' styles.css)",
+      "Bash(sed -i 's/^        //' script.js)",
+      "Bash(cd:*)"
+    ]
+  }
+}
