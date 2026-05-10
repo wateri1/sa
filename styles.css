@@ -20,13 +20,22 @@
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
+html {
+    overflow: hidden;
+    position: fixed;
+    inset: 0;
+    touch-action: pan-x pan-y;
+}
+
 body {
     font-family: 'Cormorant Garamond', serif;
     background: var(--bg-deep);
     color: var(--text);
     overflow: hidden;
-    height: 100vh;
-    width: 100vw;
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    inset: 0;
 }
 
 /* Navigation */
@@ -69,7 +78,7 @@ body {
 
 /* Pages */
 .page {
-    position: absolute;
+    position: fixed;
     inset: 0;
     display: flex;
     flex-direction: column;
@@ -80,6 +89,7 @@ body {
     transition: opacity 0.8s ease, transform 0.8s ease;
     transform: scale(0.95);
     padding: 40px 40px 80px;
+    background-attachment: fixed;
 }
 
 .page.active {
